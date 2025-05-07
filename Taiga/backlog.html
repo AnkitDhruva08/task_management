@@ -1,0 +1,319 @@
+<!-- 
+I will proceed to create the "Backlog" view for the Taiga-style project management mockup. This view typically contains a prioritized list of user stories and tasks for future sprints, with functionalities such as sorting and basic visual prioritization.
+
+I will add the following features:
+- Sidebar navigation with active state switching to "Backlog"
+- Backlog list showing user stories with titles, types (story, task, bug), priority tags, and assigned users
+- Ability to reorder or prioritize user stories (static for mockup)
+- Clean, modern styling consistent with previous Kanban mockup
+- Responsive layout for desktop and mobile
+
+This will serve as a strong visual reference for the "Backlog" section in your Taiga-like design.
+
+Now I will create the single HTML file for this Backlog view mockup.
+
+
+
+`taiga_backlog_mockup.html`
+```html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Taiga Style Backlog Mockup</title>
+<style>
+  /* Reset and base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    background-color: #fafbfc;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  h1,h2,h3,h4,h5,h6 {
+    margin: 0 0 .5em 0;
+  }
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    transition: background-color 0.2s ease;
+  }
+  button:hover {
+    background-color: #e4e8f7;
+  }
+  /* Layout */
+  .app {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+  /* Sidebar */
+  nav.sidebar {
+    width: 250px;
+    background: #1e293b;
+    color: #cbd5e1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  nav.sidebar h2 {
+    color: #f8fafc;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  nav.sidebar .nav-link {
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+  }
+  nav.sidebar .nav-link.active, nav.sidebar .nav-link:hover {
+    background: #3b82f6;
+    color: white;
+  }
+
+  /* Main content */
+  main.main-content {
+    flex-grow: 1;
+    background: white;
+    padding: 24px 30px;
+    overflow-y: auto;
+  }
+  header.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  header.app-header h1 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #1e293b;
+  }
+  header.app-header .btn-primary {
+    background-color: #3b82f6;
+    color: white;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    user-select: none;
+  }
+  header.app-header .btn-primary:hover {
+    background-color: #2563eb;
+  }
+
+  /* Backlog list */
+  .backlog-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .backlog-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+    transition: box-shadow 0.15s ease;
+  }
+  .backlog-item:hover {
+    box-shadow: 0 4px 8px rgb(0 0 0 / 0.12);
+  }
+  .backlog-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .backlog-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #1e293b;
+  }
+  .backlog-type {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    user-select: none;
+    text-transform: uppercase;
+  }
+  .type-story {
+    background-color: #2563eb;
+  }
+  .type-task {
+    background-color: #16a34a;
+  }
+  .type-bug {
+    background-color: #dc2626;
+  }
+  .backlog-priority {
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    user-select: none;
+    color: white;
+    margin-left: 8px;
+  }
+  .priority-low {
+    background-color: #16a34a;
+  }
+  .priority-medium {
+    background-color: #f59e0b;
+  }
+  .priority-high {
+    background-color: #dc2626;
+  }
+  .priority-critical {
+    background-color: #991b1b;
+  }
+  .backlog-meta {
+    display: flex;
+    font-size: 0.8rem;
+    color: #64748b;
+    justify-content: space-between;
+  }
+  .backlog-meta span {
+    user-select: none;
+  }
+  .assignees {
+    display: flex;
+    align-items: center;
+  }
+  .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #3b82f6;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: -8px;
+    border: 2px solid white;
+  }
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav.sidebar {
+      display: none;
+    }
+    main.main-content {
+      padding: 20px 15px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="app" role="application" aria-label="Taiga style backlog interface">
+  <nav class="sidebar" aria-label="Primary navigation">
+    <h2>Taiga PM</h2>
+    <a href="#" class="nav-link">Kanban Board</a>
+    <a href="#" class="nav-link active" aria-current="page">Backlog</a>
+    <a href="#" class="nav-link">Sprints</a>
+    <a href="#" class="nav-link">Tasks</a>
+    <a href="#" class="nav-link">Issues</a>
+    <a href="#" class="nav-link">Wiki</a>
+  </nav>
+  <main class="main-content">
+    <header class="app-header">
+      <h1>Backlog</h1>
+      <button class="btn-primary" aria-label="Add new user story">Add User Story</button>
+    </header>
+    <ul class="backlog-list" aria-label="User stories backlog">
+      <li class="backlog-item" tabindex="0" role="listitem" aria-labelledby="story1-title">
+        <div class="backlog-item-header">
+          <span class="backlog-title" id="story1-title">As a user, I want to reset my password</span>
+          <span class="backlog-type type-story" aria-label="Story type">Story</span>
+          <span class="backlog-priority priority-high" aria-label="High priority">High</span>
+        </div>
+        <div class="backlog-meta">
+          <span>Estimate: 3 pts</span>
+          <div class="assignees" aria-label="Assigned users">
+            <span class="avatar" title="John Smith">JS</span>
+            <span class="avatar" title="Alice Brown">AB</span>
+          </div>
+        </div>
+      </li>
+      <li class="backlog-item" tabindex="0" role="listitem" aria-labelledby="task1-title">
+        <div class="backlog-item-header">
+          <span class="backlog-title" id="task1-title">Implement OAuth login</span>
+          <span class="backlog-type type-task" aria-label="Task type">Task</span>
+          <span class="backlog-priority priority-medium" aria-label="Medium priority">Medium</span>
+        </div>
+        <div class="backlog-meta">
+          <span>Estimate: 5 pts</span>
+          <div class="assignees" aria-label="Assigned users">
+            <span class="avatar" title="Mark Wilson">MW</span>
+          </div>
+        </div>
+      </li>
+      <li class="backlog-item" tabindex="0" role="listitem" aria-labelledby="bug1-title">
+        <div class="backlog-item-header">
+          <span class="backlog-title" id="bug1-title">Fix crash when submitting form</span>
+          <span class="backlog-type type-bug" aria-label="Bug type">Bug</span>
+          <span class="backlog-priority priority-critical" aria-label="Critical priority">Critical</span>
+        </div>
+        <div class="backlog-meta">
+          <span>Estimate: 8 pts</span>
+          <div class="assignees" aria-label="Assigned users">
+            <span class="avatar" title="Lisa Stern">LS</span>
+            <span class="avatar" title="David Tan">DT</span>
+          </div>
+        </div>
+      </li>
+      <li class="backlog-item" tabindex="0" role="listitem" aria-labelledby="story2-title">
+        <div class="backlog-item-header">
+          <span class="backlog-title" id="story2-title">Create user profile page</span>
+          <span class="backlog-type type-story" aria-label="Story type">Story</span>
+          <span class="backlog-priority priority-low" aria-label="Low priority">Low</span>
+        </div>
+        <div class="backlog-meta">
+          <span>Estimate: 2 pts</span>
+          <div class="assignees" aria-label="Assigned users">
+            <span class="avatar" title="Alice Brown">AB</span>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </main>
+</div>
+</body>
+</html>
+```
+
+
+✅ Taiga-style backlog mockup created!
+
+- Sidebar navigation with Backlog selected
+- Clean list of user stories, tasks, and bugs with priority badges and assignee avatars
+- Accessible markup and keyboard focusability
+- Responsive layout
+- Modern, minimal styling consistent with Taiga UI spirit
+
+Open `taiga_backlog_mockup.html` in your browser to explore the backlog interface. It can serve as a strong visual base for your Figma design.
+
+Let me know what you want next — sprints, tasks detail, issue tracking or wiki layout?
+

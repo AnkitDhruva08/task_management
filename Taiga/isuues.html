@@ -1,0 +1,263 @@
+<!-- I see you want me to continue building the next component of the Taiga-style project management mockup.
+
+Next, I will create the "Issues" view. This page typically lists bugs, issues, or tickets that need tracking and resolution. It features a list or table of issues with details such as ID, title, status, priority, assignee, and created date, often with filtering and sorting capabilities.
+
+Here's what I'll include in this "Issues" tab mockup:
+- Sidebar with the "Issues" tab active for clear navigation
+- Issues table with columns: ID, Title, Status, Priority, Assigned To, Created Date
+- Color-coded badges for status and priority
+- Action buttons for editing and deleting issues (non-functional placeholders for mockup)
+- Responsive and modern styling consistent with other Taiga views
+
+I will provide the entire static mockup in a single HTML file with inline CSS.
+
+Proceeding to create `taiga_issues_mockup.html` to serve as your detailed visual reference for the Issues interface.
+
+
+
+`taiga_issues_mockup.html`
+```html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Taiga Style Issues</title>
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    background-color: #fafbfc;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1,h2,h3,h4 {
+    margin: 0 0 0.5em 0;
+  }
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    background-color: #3b82f6;
+    color: white;
+    padding: 8px 14px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+  }
+  button:hover {
+    background-color: #2563eb;
+  }
+  /* Layout */
+  .app {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+  nav.sidebar {
+    width: 250px;
+    background: #1e293b;
+    color: #cbd5e1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  nav.sidebar h2 {
+    color: #f8fafc;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  nav.sidebar .nav-link {
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    text-decoration: none;
+    color: inherit;
+  }
+  nav.sidebar .nav-link.active, nav.sidebar .nav-link:hover {
+    background: #3b82f6;
+    color: white;
+  }
+  main.main-content {
+    flex-grow: 1;
+    background: white;
+    padding: 24px 30px;
+    overflow-y: auto;
+  }
+  header.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  header.app-header h1 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #1e293b;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th, td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+    vertical-align: middle;
+  }
+  th {
+    background: #f6f8fa;
+    color: #1e293b;
+    font-weight: 600;
+  }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    user-select: none;
+  }
+  .badge.open { background: #ef4444; }
+  .badge.in-progress { background: #3b82f6; }
+  .badge.done { background: #10b981; }
+  .badge.blocked { background: #dc2626; }
+
+  .badge.low { background: #16a34a; }
+  .badge.medium { background: #f59e0b; }
+  .badge.high { background: #dc2626; }
+  .badge.critical { background: #991b1b; }
+
+  /* Action buttons */
+  .action-btn {
+    background: #3b82f6;
+    color: white;
+    font-weight: 600;
+    border-radius: 4px;
+    line-height: 1;
+    padding: 4px 10px;
+    margin-right: 6px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s ease;
+  }
+  .action-btn:hover {
+    background: #2563eb;
+  }
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav.sidebar {
+      display: none;
+    }
+    main.main-content {
+      padding: 20px 15px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="app" role="application" aria-label="Taiga style issues interface">
+  <nav class="sidebar" aria-label="Primary navigation">
+    <h2>Taiga PM</h2>
+    <a href="#" class="nav-link">Kanban Board</a>
+    <a href="#" class="nav-link">Backlog</a>
+    <a href="#" class="nav-link">Sprints</a>
+    <a href="#" class="nav-link">Tasks</a>
+    <a href="#" class="nav-link active" aria-current="page">Issues</a>
+    <a href="#" class="nav-link">Wiki</a>
+  </nav>
+  <main class="main-content">
+    <header class="app-header">
+      <h1>Issues</h1>
+      <button aria-label="Add new issue">Add Issue</button>
+    </header>
+    <table aria-label="Issues list">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Priority</th>
+          <th>Assigned To</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>#124</td>
+          <td>Login button not responsive</td>
+          <td><span class="badge open">Open</span></td>
+          <td><span class="badge high">High</span></td>
+          <td>John Smith</td>
+          <td>2024-04-15</td>
+          <td>
+            <button class="action-btn" aria-label="Edit issue 124">Edit</button>
+            <button class="action-btn" aria-label="Delete issue 124">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>#130</td>
+          <td>Crash on submitting form</td>
+          <td><span class="badge blocked">Blocked</span></td>
+          <td><span class="badge critical">Critical</span></td>
+          <td>Lisa Stern</td>
+          <td>2024-04-12</td>
+          <td>
+            <button class="action-btn" aria-label="Edit issue 130">Edit</button>
+            <button class="action-btn" aria-label="Delete issue 130">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>#135</td>
+          <td>UI misalignment on mobile</td>
+          <td><span class="badge in-progress">In Progress</span></td>
+          <td><span class="badge medium">Medium</span></td>
+          <td>Alice Brown</td>
+          <td>2024-04-10</td>
+          <td>
+            <button class="action-btn" aria-label="Edit issue 135">Edit</button>
+            <button class="action-btn" aria-label="Delete issue 135">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>#140</td>
+          <td>Data sync failure</td>
+          <td><span class="badge open">Open</span></td>
+          <td><span class="badge high">High</span></td>
+          <td>Mark Wilson</td>
+          <td>2024-04-17</td>
+          <td>
+            <button class="action-btn" aria-label="Edit issue 140">Edit</button>
+            <button class="action-btn" aria-label="Delete issue 140">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+</div>
+</body>
+</html>
+```
+
+✅ Taiga-style Issues view completed!
+
+- Sidebar with Issues tab active
+- List of issues with status and priority badges
+- Edit and Delete action buttons (placeholders)
+- Responsive clean layout consistent with Taiga theme
+
+Open the `taiga_issues_mockup.html` in your browser for a polished issues management interface.
+
+Would you like me to continue with the "Wiki" view or any other part next?

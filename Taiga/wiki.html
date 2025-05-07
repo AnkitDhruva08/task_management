@@ -1,0 +1,189 @@
+<!-- I will now create the "Wiki" view of the Taiga-style project management mockup. This view typically provides a simple and clean documentation or notes area where project-related information can be documented and browsed.
+
+Features I will include:
+- Sidebar navigation with "Wiki" tab active
+- Header with project wiki title
+- Main content area with sections and headings
+- Editable sections with placeholder text (static for mockup)
+- Clean typography and spacing consistent with Taiga style
+- Responsive layout for ease of reading on various devices
+
+I will provide the complete HTML file with inline CSS to serve as a clear Figma or design reference for your Wiki section.
+
+Creating `taiga_wiki_mockup.html` now.
+
+
+
+`taiga_wiki_mockup.html`
+```html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Taiga Style Wiki</title>
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    background-color: #fafbfc;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+  }
+  h1,h2,h3,h4,h5 {
+    margin: 0 0 0.75em 0;
+    font-weight: 600;
+  }
+  a {
+    color: #2563eb;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  /* Layout */
+  .app {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+  nav.sidebar {
+    width: 250px;
+    background: #1e293b;
+    color: #cbd5e1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  nav.sidebar h2 {
+    color: #f8fafc;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  nav.sidebar .nav-link {
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    text-decoration: none;
+    color: inherit;
+  }
+  nav.sidebar .nav-link.active, nav.sidebar .nav-link:hover {
+    background: #3b82f6;
+    color: white;
+  }
+  main.main-content {
+    flex-grow: 1;
+    background: white;
+    padding: 30px 36px;
+    overflow-y: auto;
+  }
+  header.app-header {
+    margin-bottom: 24px;
+  }
+  header.app-header h1 {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: #1e293b;
+    margin-bottom: 6px;
+  }
+  section.content-section {
+    max-width: 900px;
+    margin-bottom: 36px;
+  }
+  section.content-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #3b82f6;
+    padding-bottom: 6px;
+  }
+  section.content-section p {
+    font-size: 1rem;
+    color: #475569;
+    margin-bottom: 12px;
+  }
+  section.content-section ul {
+    padding-left: 20px;
+  }
+  section.content-section ul li {
+    margin-bottom: 8px;
+  }
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav.sidebar {
+      display: none;
+    }
+    main.main-content {
+      padding: 20px 15px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="app" role="application" aria-label="Taiga style wiki interface">
+  <nav class="sidebar" aria-label="Primary navigation">
+    <h2>Taiga PM</h2>
+    <a href="#" class="nav-link">Kanban Board</a>
+    <a href="#" class="nav-link">Backlog</a>
+    <a href="#" class="nav-link">Sprints</a>
+    <a href="#" class="nav-link">Tasks</a>
+    <a href="#" class="nav-link">Issues</a>
+    <a href="#" class="nav-link active" aria-current="page">Wiki</a>
+  </nav>
+  <main class="main-content">
+    <header class="app-header">
+      <h1>Project Wiki</h1>
+      <p>Documentation and notes for the Website Redesign project.</p>
+    </header>
+    <section class="content-section" id="overview">
+      <h2>Project Overview</h2>
+      <p>This project aims to revamp the company website with a fresh design and improved user experience. The redesign focuses on responsiveness, accessibility, and modern aesthetics.</p>
+    </section>
+    <section class="content-section" id="requirements">
+      <h2>Requirements</h2>
+      <ul>
+        <li>Responsive design across devices</li>
+        <li>Improved navigation and information architecture</li>
+        <li>Support user login and personalization</li>
+        <li>Integrate with existing backend APIs</li>
+      </ul>
+    </section>
+    <section class="content-section" id="design-guidelines">
+      <h2>Design Guidelines</h2>
+      <p>The new design should adhere to our brand colors and typography standards, maintaining consistency with company branding. Use accessible color contrast and keyboard navigable controls.</p>
+    </section>
+    <section class="content-section" id="development-tips">
+      <h2>Development Tips</h2>
+      <ul>
+        <li>Follow component-based architecture</li>
+        <li>Write unit and integration tests for new features</li>
+        <li>Ensure all API endpoints are well documented</li>
+        <li>Deploy to staging environment for QA testing before release</li>
+      </ul>
+    </section>
+  </main>
+</div>
+</body>
+</html>
+```
+
+✅ Taiga-style Wiki view created!
+
+- Sidebar with "Wiki" tab active
+- Header with wiki title and description
+- Multiple documentation sections with headings, paragraphs, and lists
+- Clean typography, spacing, and brand-consistent styling
+- Responsive for smaller screens
+
+Open the file `taiga_wiki_mockup.html` in your browser to explore the Wiki interface mockup. It is ready for use as a Figma or design reference.
+
+Let me know if you want to continue building additional features or views, or if you want integration of all these mockups into a single multi-tab interface.

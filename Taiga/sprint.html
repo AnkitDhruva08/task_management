@@ -1,0 +1,305 @@
+<!-- 
+I will now create the "Sprint Planning" view for the Taiga-style project management mockup. This view typically includes sprint details, a list of tasks assigned in the sprint with status and progress indicators, and sprint metrics such as burndown chart placeholders.
+
+Features to include:
+- Sidebar with the "Sprints" tab active
+- Sprint overview header with sprint name, dates, and overall progress bar
+- Task list with task titles, status badges, assignees, and estimates
+- A placeholder area for a burndown chart (static image or stylized block)
+- Responsive and modern styling consistent with previous mockups
+
+This will visually complete the core sprint planning section of a Taiga-like project management tool.
+
+Now I will develop this in a single HTML file with inline CSS and JavaScript.
+
+
+
+`taiga_sprint_planning_mockup.html`
+```html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Taiga Style Sprint Planning</title>
+<style>
+  /* Base styles */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    background-color: #fafbfc;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1,h2,h3,h4 {
+    margin: 0 0 0.5em 0;
+  }
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    transition: background-color 0.2s ease;
+  }
+  button:hover {
+    background-color: #e4e8f7;
+  }
+  /* Layout */
+  .app {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+  /* Sidebar */
+  nav.sidebar {
+    width: 250px;
+    background: #1e293b;
+    color: #cbd5e1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  nav.sidebar h2 {
+    color: #f8fafc;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  nav.sidebar .nav-link {
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    user-select: none;
+  }
+  nav.sidebar .nav-link.active, nav.sidebar .nav-link:hover {
+    background: #3b82f6;
+    color: white;
+  }
+  /* Main content */
+  main.main-content {
+    flex-grow: 1;
+    background: white;
+    padding: 24px 30px;
+    overflow-y: auto;
+  }
+  header.app-header {
+    margin-bottom: 24px;
+  }
+  header.app-header h1 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #1e293b;
+    margin-bottom: 6px;
+  }
+  header.app-header .sprint-dates {
+    color: #64748b;
+    font-size: 0.9rem;
+  }
+  /* Progress bar */
+  .progress-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+  }
+  .progress-bar {
+    flex-grow: 1;
+    height: 12px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-right: 12px;
+  }
+  .progress-bar-inner {
+    height: 12px;
+    background: #3b82f6;
+    border-radius: 10px 0 0 10px;
+    transition: width 0.4s ease;
+  }
+  .progress-text {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #1e293b;
+    min-width: 42px;
+    text-align: right;
+  }
+
+  /* Sprint tasks table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 24px;
+  }
+  th, td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+    vertical-align: middle;
+  }
+  th {
+    background: #f6f8fa;
+    color: #1e293b;
+    font-weight: 600;
+  }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    user-select: none;
+  }
+  .badge.todo { background: #fbbf24; }
+  .badge.in-progress { background: #3b82f6; }
+  .badge.done { background: #16a34a; }
+  .badge.blocked { background: #dc2626; }
+
+  /* Avatar */
+  .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #3b82f6;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    user-select: none;
+  }
+
+  /* Burndown chart area */
+  .burndown-chart {
+    margin-top: 40px;
+    height: 220px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 50%, #93c5fd 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 1.25rem;
+    user-select: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav.sidebar {
+      display: none;
+    }
+    main.main-content {
+      padding: 20px 15px;
+    }
+    .avatar {
+      width: 24px;
+      height: 24px;
+      font-size: 13px;
+      margin-right: 6px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="app" role="application" aria-label="Taiga style sprint planning interface">
+  <nav class="sidebar" aria-label="Primary navigation">
+    <h2>Taiga PM</h2>
+    <a href="#" class="nav-link">Kanban Board</a>
+    <a href="#" class="nav-link">Backlog</a>
+    <a href="#" class="nav-link active" aria-current="page">Sprints</a>
+    <a href="#" class="nav-link">Tasks</a>
+    <a href="#" class="nav-link">Issues</a>
+    <a href="#" class="nav-link">Wiki</a>
+  </nav>
+  <main class="main-content">
+    <header class="app-header">
+      <h1>Sprint 5: Website Redesign</h1>
+      <div class="sprint-dates">Apr 20, 2024 – May 4, 2024</div>
+      <div class="progress-container" aria-label="Sprint progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-bar-inner" style="width: 70%;"></div>
+        </div>
+        <div class="progress-text">70%</div>
+      </div>
+    </header>
+    <section aria-label="Sprint tasks list">
+      <table>
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Status</th>
+            <th>Assignees</th>
+            <th>Estimate</th>
+            <th>Due Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Implement Login Page</td>
+            <td><span class="badge in-progress">In Progress</span></td>
+            <td><span class="avatar" title="Alice Brown">AB</span> <span class="avatar" title="Mark Wilson">MW</span></td>
+            <td>5 pts</td>
+            <td>May 1, 2024</td>
+          </tr>
+          <tr>
+            <td>Fix Login Bug</td>
+            <td><span class="badge todo">To Do</span></td>
+            <td><span class="avatar" title="John Smith">JS</span></td>
+            <td>3 pts</td>
+            <td>Apr 28, 2024</td>
+          </tr>
+          <tr>
+            <td>Design Dashboard Wireframes</td>
+            <td><span class="badge done">Done</span></td>
+            <td><span class="avatar" title="Alice Brown">AB</span></td>
+            <td>4 pts</td>
+            <td>Apr 25, 2024</td>
+          </tr>
+          <tr>
+            <td>Write Unit Tests for API</td>
+            <td><span class="badge in-progress">In Progress</span></td>
+            <td><span class="avatar" title="David Tan">DT</span></td>
+            <td>6 pts</td>
+            <td>May 3, 2024</td>
+          </tr>
+          <tr>
+            <td>Fix Crash in Submit Form</td>
+            <td><span class="badge blocked">Blocked</span></td>
+            <td><span class="avatar" title="Lisa Stern">LS</span></td>
+            <td>8 pts</td>
+            <td>Apr 29, 2024</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="burndown-chart" aria-label="Burndown chart placeholder">
+      Burndown Chart Placeholder
+    </section>
+  </main>
+</div>
+</body>
+</html>
+```
+
+✅ Taiga-style Sprint Planning view complete!
+
+- Sidebar with "Sprints" tab active
+- Sprint overview: sprint name, date range, and progress bar
+- Task list with status badges, assignees with avatars, estimates, and due dates
+- Visual placeholder for burndown chart area
+- Responsive and modern styling consistent with other mockups
+
+Open `taiga_sprint_planning_mockup.html` in your browser to explore the sprint planning interface for your design inspiration.
+
+What would you like me to build next? Tasks detail, issue board, wiki, or something else?

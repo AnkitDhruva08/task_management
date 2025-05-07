@@ -1,0 +1,335 @@
+<!-- I have created a modern and clean project management dashboard mockup inspired by Jira that you can easily use as a Figma design reference.
+
+I will now provide you with a single HTML file containing the entire design. You can download this file and open it in any modern web browser to view the layout and visuals. It will serve as great visual material for your project or for recreating in Figma.
+
+Downloading the file named `project_management_figma_mockup.html` now:
+
+`project_management_figma_mockup.html`
+```html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Project Management Figma Mockup</title>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f6f8;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1,h2,h3,h4 {
+    margin: 0; font-weight: 600;
+  }
+  p {
+    margin: 0;
+  }
+  /* Layout */
+  .container {
+    max-width: 1150px;
+    margin: auto;
+    padding: 20px;
+  }
+  .header {
+    background: #0052cc;
+    color: white;
+    padding: 15px 30px;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  /* Sidebar */
+  .sidebar {
+    background: #172b4d;
+    color: #aab8c2;
+    width: 260px;
+    height: 100vh;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    overflow-y: auto;
+    padding-top: 20px;
+    font-size: 14px;
+  }
+  .sidebar a {
+    display: block;
+    padding: 12px 20px;
+    color: #aab8c2; 
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .sidebar a.active, .sidebar a:hover {
+    background: #0052cc;
+    color: white;
+    border-left: 4px solid #4c9aff;
+    font-weight: 600;
+  }
+
+  /* Main content area */
+  .main-content {
+    margin-left: 280px;
+    padding: 20px;
+    background: white;
+    min-height: 100vh;
+  }
+
+  /* Grid for dashboard */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-gap: 20px;
+  }
+  .card {
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.12);
+    padding: 15px 20px;
+  }
+  .card h3 {
+    margin-bottom: 10px;
+    color: #0052cc;
+  }
+
+  /* Progress Bar */
+  .progress-bar {
+    background: #dfe1e6;
+    border-radius: 10px;
+    height: 10px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .progress-bar-inner {
+    height: 10px;
+    background: #4c9aff;
+    border-radius: 10px 0 0 10px;
+  }
+
+  /* Table style for bugs, projects, employees */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid #e1e4e8;
+  }
+  th {
+    background-color: #f6f8fa;
+    font-weight: 600;
+    color: #172b4d;
+  }
+
+  /* Labels and badges */
+  .badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+  }
+  .badge.open { background-color: #de350b; }
+  .badge.in-progress { background-color: #ff991f; }
+  .badge.done { background-color: #36b37e; }
+  .badge.blocked { background-color: #ff5630; }
+
+  /* Buttons */
+  button {
+    background: #0052cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 7px 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  button:hover {
+    background: #0747a6;
+  }
+
+  /* Scroll container */
+  .scroll-container {
+    max-height: 280px;
+    overflow-y: auto;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+  }
+
+  /* Employee avatar */
+  .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #ccc;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 768px) {
+    .sidebar {
+      position: relative;
+      width: 100%;
+      height: auto;
+      top: 0;
+      padding: 10px 0;
+      font-size: 12px;
+    }
+    .main-content {
+      margin-left: 0;
+      padding: 10px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="header">Project Management - Jira Style</div>
+  <nav class="sidebar" aria-label="Main navigation">
+    <a href="#" class="active">Dashboard</a>
+    <a href="project.html">Projects</a>
+    <a href="#">Bugs & Testing</a>
+    <a href="#">Retrospective</a>
+    <a href="#">Employees</a>
+    <a href="#">Tasks Today</a>
+  </nav>
+  <main class="main-content" role="main" aria-label="Dashboard overview">
+
+    <h2>Dashboard Overview</h2>
+    <p>Quick summary of project statuses, tasks, and bugs.</p>
+    <div class="dashboard-grid" style="margin-bottom: 30px;">
+      <section class="card" aria-labelledby="projectsStatusTitle">
+        <h3 id="projectsStatusTitle">Project Status</h3>
+        <table aria-describedby="projectsStatusTitle">
+          <thead>
+            <tr>
+              <th>Project</th><th>Progress</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Website Redesign</td><td>
+              <div class="progress-bar" aria-label="60% complete">
+                <div class="progress-bar-inner" style="width: 60%;"></div>
+              </div>
+            </td><td><span class="badge in-progress">In Progress</span></td></tr>
+            <tr><td>Mobile App</td><td>
+              <div class="progress-bar" aria-label="80% complete">
+                <div class="progress-bar-inner" style="width: 80%;"></div>
+              </div>
+            </td><td><span class="badge in-progress">In Progress</span></td></tr>
+            <tr><td>API Development</td><td>
+              <div class="progress-bar" aria-label="100% complete">
+                <div class="progress-bar-inner" style="width: 100%; background:#36b37e;"></div>
+              </div>
+            </td><td><span class="badge done">Done</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card" aria-labelledby="bugTrackingTitle">
+        <h3 id="bugTrackingTitle">Bug Tracking</h3>
+        <div class="scroll-container" role="region" aria-live="polite" aria-atomic="true">
+          <table aria-describedby="bugTrackingTitle">
+            <thead>
+              <tr><th>ID</th><th>Title</th><th>Status</th><th>Priority</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>#124</td><td>Login button not responsive</td><td><span class="badge open">Open</span></td><td>High</td></tr>
+              <tr><td>#130</td><td>Crash on submitting form</td><td><span class="badge blocked">Blocked</span></td><td>Critical</td></tr>
+              <tr><td>#135</td><td>UI misalignment on mobile</td><td><span class="badge in-progress">In Progress</span></td><td>Medium</td></tr>
+              <tr><td>#140</td><td>Data sync failure</td><td><span class="badge open">Open</span></td><td>High</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <button style="margin-top: 12px;">View all bugs</button>
+      </section>
+
+      <section class="card" aria-labelledby="retrospectiveTitle">
+        <h3 id="retrospectiveTitle">Sprint Retrospective Highlights</h3>
+        <ul>
+          <li>Improve test coverage on the mobile app.</li>
+          <li>Address frequent crashes on submission.</li>
+          <li>Better documentation for REST APIs.</li>
+          <li>Schedule daily standups for dev and QA teams.</li>
+        </ul>
+      </section>
+
+    </div>
+
+    <h2>Employee Task Tracker for Today</h2>
+    <table aria-label="Current employees and their tasks for today" style="margin-bottom: 40px;">
+      <thead>
+        <tr><th>Employee</th><th>Project</th><th>Today's Task</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="avatar" aria-hidden="true">JS</span> John Smith</td>
+          <td>Mobile App</td>
+          <td>Fix login bug</td>
+          <td><span class="badge in-progress">In Progress</span></td>
+        </tr>
+        <tr>
+          <td><span class="avatar" aria-hidden="true">AB</span> Alice Brown</td>
+          <td>Website Redesign</td>
+          <td>Create wireframes</td>
+          <td><span class="badge done">Done</span></td>
+        </tr>
+        <tr>
+          <td><span class="avatar" aria-hidden="true">MW</span> Mark Wilson</td>
+          <td>API Development</td>
+          <td>Code review &amp; deploy</td>
+          <td><span class="badge done">Done</span></td>
+        </tr>
+        <tr>
+          <td><span class="avatar" aria-hidden="true">LS</span> Lisa Stern</td>
+          <td>Mobile App</td>
+          <td>Write test cases</td>
+          <td><span class="badge open">Open</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Project Detail: Website Redesign</h2>
+    <p><strong>Project Description:</strong> Revamp the company website for a modern look and improved UX.</p>
+    <table aria-label="Employees involved in Website Redesign project">
+      <thead><tr><th>Employee</th><th>Role</th><th>Current Task</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="avatar" aria-hidden="true">AB</span> Alice Brown</td>
+          <td>UI/UX Designer</td>
+          <td>Create wireframes &amp; prototypes</td>
+        </tr>
+        <tr>
+          <td><span class="avatar" aria-hidden="true">DT</span> David Tan</td>
+          <td>Frontend Developer</td>
+          <td>Implement responsive header</td>
+        </tr>
+        <tr>
+          <td><span class="avatar" aria-hidden="true">JS</span> John Smith</td>
+          <td>QA Engineer</td>
+          <td>Test new features</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>
+</content>
+</create_file>
+<!-- 
+You can download this file and then open it directly in your browser for a clean, modern project management UI reference. If you want me to generate individual images from this layout for direct use in Figma or elsewhere, please let me know!
+``` -->

@@ -1,0 +1,326 @@
+<!-- `taiga_tasks_mockup.html`
+```html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Taiga Style Tasks</title>
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    background-color: #fafbfc;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+  }
+  h1,h2,h3,h4 {
+    margin: 0 0 0.5em 0;
+  }
+  button, input, select, textarea {
+    font-family: inherit;
+  }
+  button {
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    background-color: #3b82f6;
+    color: white;
+    padding: 10px 16px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+  }
+  button:hover {
+    background-color: #2563eb;
+  }
+  /* Layout */
+  .app {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+  nav.sidebar {
+    width: 250px;
+    background: #1e293b;
+    color: #cbd5e1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  nav.sidebar h2 {
+    color: #f8fafc;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  nav.sidebar .nav-link {
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    text-decoration: none;
+    color: inherit;
+  }
+  nav.sidebar .nav-link.active, nav.sidebar .nav-link:hover {
+    background: #3b82f6;
+    color: white;
+  }
+  main.main-content {
+    flex-grow: 1;
+    background: white;
+    padding: 24px 30px;
+    overflow-y: auto;
+  }
+  header.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  header.app-header h1 {
+    color: #1e293b;
+    font-weight: 700;
+    font-size: 1.5rem;
+  }
+  .filters {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  select {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+    color: #374151;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th,td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+    vertical-align: middle;
+  }
+  th {
+    background: #f6f8fa;
+    color: #1e293b;
+    font-weight: 600;
+  }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    user-select: none;
+  }
+  .badge.todo { background: #fbbf24; }
+  .badge.in-progress { background: #3b82f6; }
+  .badge.done { background: #10b981; }
+  .badge.blocked { background: #dc2626; }
+  .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #3b82f6;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 6px;
+    user-select: none;
+  }
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav.sidebar {
+      display: none;
+    }
+    main.main-content {
+      padding: 20px 15px;
+    }
+    .filters {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="app" role="application" aria-label="Taiga style tasks interface">
+  <nav class="sidebar" aria-label="Primary navigation">
+    <h2>Taiga PM</h2>
+    <a href="#" class="nav-link">Kanban Board</a>
+    <a href="#" class="nav-link">Backlog</a>
+    <a href="#" class="nav-link">Sprints</a>
+    <a href="#" class="nav-link active" aria-current="page">Tasks</a>
+    <a href="#" class="nav-link">Issues</a>
+    <a href="#" class="nav-link">Wiki</a>
+  </nav>
+  <main class="main-content">
+    <header class="app-header">
+      <h1>Tasks</h1>
+      <button aria-label="Add new task">Add Task</button>
+    </header>
+    <div class="filters" role="region" aria-label="Task filters">
+      <select id="filterStatus" aria-label="Filter by status">
+        <option value="">All Statuses</option>
+        <option value="todo">To Do</option>
+        <option value="in-progress">In Progress</option>
+        <option value="done">Done</option>
+        <option value="blocked">Blocked</option>
+      </select>
+      <select id="filterAssignee" aria-label="Filter by assignee">
+        <option value="">All Assignees</option>
+        <option value="JS">John Smith</option>
+        <option value="AB">Alice Brown</option>
+        <option value="MW">Mark Wilson</option>
+        <option value="DT">David Tan</option>
+        <option value="LS">Lisa Stern</option>
+      </select>
+    </div>
+    <table aria-label="Task list">
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Status</th>
+          <th>Assignees</th>
+          <th>Estimate</th>
+          <th>Due Date</th>
+        </tr>
+      </thead>
+      <tbody id="taskTableBody">
+        <!-- Tasks dynamically loaded -->
+      </tbody>
+    </table>
+  </main>
+</div>
+
+<script>
+  const tasks = [
+    {
+      id:1,
+      title:"Implement Login Page",
+      status:"in-progress",
+      assignees:["AB","MW"],
+      estimate:"5 pts",
+      dueDate:"2024-05-01"
+    },
+    {
+      id:2,
+      title:"Fix Login Bug",
+      status:"todo",
+      assignees:["JS"],
+      estimate:"3 pts",
+      dueDate:"2024-04-28"
+    },
+    {
+      id:3,
+      title:"Design Dashboard Wireframes",
+      status:"done",
+      assignees:["AB"],
+      estimate:"4 pts",
+      dueDate:"2024-04-25"
+    },
+    {
+      id:4,
+      title:"Write Unit Tests for API",
+      status:"in-progress",
+      assignees:["DT"],
+      estimate:"6 pts",
+      dueDate:"2024-05-03"
+    },
+    {
+      id:5,
+      title:"Fix Crash in Submit Form",
+      status:"blocked",
+      assignees:["LS"],
+      estimate:"8 pts",
+      dueDate:"2024-04-29"
+    }
+  ];
+
+  const statusBadgeClasses = {
+    "todo": "badge todo",
+    "in-progress": "badge in-progress",
+    "done": "badge done",
+    "blocked": "badge blocked"
+  };
+
+  const assigneeNames = {
+    "JS": "John Smith",
+    "AB": "Alice Brown",
+    "MW": "Mark Wilson",
+    "DT": "David Tan",
+    "LS": "Lisa Stern"
+  };
+
+  function renderTasks(filterStatus = "", filterAssignee = "") {
+    const tbody = document.getElementById("taskTableBody");
+    tbody.innerHTML = "";
+    const filteredTasks = tasks.filter(task => {
+      return (filterStatus === "" || task.status === filterStatus) &&
+             (filterAssignee === "" || task.assignees.includes(filterAssignee));
+    });
+    filteredTasks.forEach(task => {
+      const tr = document.createElement("tr");
+      const assigneeHtml = task.assignees.map(a => {
+        return '<span class="avatar" title="'+assigneeNames[a]+'">'+a+'</span>';
+      }).join("");
+      tr.innerHTML = `
+        <td>${task.title}</td>
+        <td><span class="${statusBadgeClasses[task.status]}">${task.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span></td>
+        <td>${assigneeHtml}</td>
+        <td>${task.estimate}</td>
+        <td>${task.dueDate}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  document.getElementById('filterStatus').addEventListener('change', e => {
+    renderTasks(e.target.value, document.getElementById('filterAssignee').value);
+  });
+  document.getElementById('filterAssignee').addEventListener('change', e => {
+    renderTasks(document.getElementById('filterStatus').value, e.target.value);
+  });
+
+  // Initial render
+  renderTasks();
+</script>
+</body>
+</html>
+</content>
+</create_file>
+
+<attempt_completion>
+✅ Taiga-style Tasks view complete!
+
+- Sidebar with Tasks tab active
+- Task list with columns: Task, Status (color-coded badges), Assignees (avatars), Estimate, Due Date
+- Filter dropdowns for status and assignee with dynamic filtering
+- Clean, modern, responsive design consistent with other Taiga views
+- Fully client-side with in-memory demo data
+
+Open `taiga_tasks_mockup.html` in your browser to review and interact with the task list view.
+
+You now have all primary Taiga-type mockup screens: Kanban, Backlog, Sprint Planning, Issues, Wiki, and Tasks.
+
+Let me know if you want me to help integrate these into a single multipage interface or add further interactivity!
+</attempt_completion>
+```
