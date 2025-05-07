@@ -1,0 +1,324 @@
+
+<!-- You want the Jira-style project management dashboard broken down into individual pages, one per main section/tab. So instead of one big HTML file with tab navigation, you'd like each page separately for Dashboard, Projects, Bugs & Testing, Retrospective, Employees, and Tasks Today.
+
+I will create a separate complete HTML file for each page replicating the related tab content with consistent styling and navigation placeholders to allow switching between pages manually. This makes it easier to review, customize or integrate one page at a time.
+
+Plan:
+- Create 6 separate HTML files:
+  1. dashboard.html
+  2. projects.html
+  3. bugs_testing.html
+  4. retrospective.html
+  5. employees.html
+  6. tasks_today.html
+
+Each page will:
+- Have consistent header and sidebar navigation with links to the other pages
+- Contain the main content corresponding to that page/tab's content from the big dashboard
+- Use modern styling consistent across pages
+- Be mobile-responsive optimized for 350px width and 600px height
+- Provide a clear, easy-to-navigate UI like a Jira tool page
+
+Now I will proceed with the first page: dashboard.html including the dashboard overview content and navigation.
+
+
+`dashboard.html`
+```html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Project Management Dashboard</title>
+<style>
+  /* Reset and base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    color: #2c3e50;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+  h1,h2,h3,h4,h5,h6 {
+    margin: 0;
+    font-weight: 600;
+  }
+  button {
+    cursor: pointer;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 14px;
+    background-color: #0052cc;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #0747a6;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Header */
+  header.app-header {
+    background: #0747a6;
+    color: white;
+    padding: 12px 24px;
+    font-size: 22px;
+    font-weight: 700;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  /* Container */
+  .app-container {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+    height: calc(100vh - 52px);
+  }
+
+  /* Sidebar */
+  nav.sidebar {
+    width: 240px;
+    background-color: #172b4d;
+    color: #aab8c2;
+    display: flex;
+    flex-direction: column;
+    padding-top: 12px;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+  nav.sidebar a {
+    padding: 14px 20px;
+    font-size: 14px;
+    color: #aab8c2;
+    user-select: none;
+    border-left: 4px solid transparent;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  nav.sidebar a.active, nav.sidebar a:hover {
+    background-color: #0052cc;
+    color: white;
+    border-left-color: #4c9aff;
+    font-weight: 600;
+  }
+
+  /* Main content */
+  main.main-content {
+    flex-grow: 1;
+    padding: 20px 28px;
+    background: white;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Dashboard overview grid */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 20px;
+    margin-top: 10px;
+  }
+
+  .card {
+    background: white;
+    padding: 18px 20px;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 0.1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card h3 {
+    color: #0747a6;
+    margin-bottom: 12px;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    background: #dfe1e6;
+    border-radius: 10px;
+    height: 11px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .progress-bar-fill {
+    height: 11px;
+    background: #4c9aff;
+    border-radius: 10px 0 0 10px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* Table styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid #e1e4e8;
+    vertical-align: middle;
+  }
+  th {
+    background-color: #f6f8fa;
+    font-weight: 600;
+    color: #172b4d;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 4px 11px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .badge.open { background-color: #de350b; }
+  .badge.in-progress { background-color: #ff991f; }
+  .badge.done { background-color: #36b37e; }
+  .badge.blocked { background-color: #ff5630; }
+
+  /* Navigation footer for smaller screens */
+  @media (max-width: 600px) {
+    nav.sidebar {
+      width: 100%;
+      height: auto;
+      flex-direction: row;
+      padding: 0;
+      overflow-x: auto;
+    }
+    nav.sidebar a {
+      flex: 1;
+      padding: 10px;
+      font-size: 12px;
+      border-left: none;
+      border-bottom: 3px solid transparent;
+      text-align: center;
+    }
+    nav.sidebar a.active, nav.sidebar a:hover {
+      border-bottom: 3px solid #4c9aff;
+      background: none;
+      color: #4c9aff;
+      border-left: none;
+    }
+    .app-container {
+      flex-direction: column;
+      height: auto;
+    }
+    main.main-content {
+      padding: 15px;
+      height: calc(100vh - 52px - 48px);
+      overflow-y: auto;
+    }
+  }
+</style>
+</head>
+<body>
+  <header class="app-header">Project Management - Dashboard</header>
+  <div class="app-container">
+    <nav class="sidebar" aria-label="Primary navigation">
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="projects.html">Projects</a>
+      <a href="bugs_testing.html">Bugs & Testing</a>
+      <a href="retrospective.html">Retrospective</a>
+      <a href="employees.html">Employees</a>
+      <a href="tasks_today.html">Tasks Today</a>
+    </nav>
+    <main class="main-content" role="main">
+      <h2>Dashboard Overview</h2>
+      <div class="dashboard-grid">
+        <section class="card" aria-label="Project Status">
+          <h3>Project Status</h3>
+          <table>
+            <thead><tr><th>Project</th><th>Progress</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Website Redesign</td>
+                <td>
+                  <div class="progress-bar" aria-label="60 percent complete">
+                    <div class="progress-bar-fill" style="width:60%;"></div>
+                  </div>
+                </td>
+                <td><span class="badge in-progress">In Progress</span></td>
+              </tr>
+              <tr>
+                <td>Mobile App</td>
+                <td>
+                  <div class="progress-bar" aria-label="80 percent complete">
+                    <div class="progress-bar-fill" style="width:80%;"></div>
+                  </div>
+                </td>
+                <td><span class="badge in-progress">In Progress</span></td>
+              </tr>
+              <tr>
+                <td>API Development</td>
+                <td>
+                  <div class="progress-bar" aria-label="100 percent complete">
+                    <div class="progress-bar-fill" style="width:100%;background:#36b37e;"></div>
+                  </div>
+                </td>
+                <td><span class="badge done">Done</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="card" aria-label="Bug Tracking">
+          <h3>Bug Tracking</h3>
+          <table>
+            <thead><tr><th>ID</th><th>Title</th><th>Status</th><th>Priority</th></tr></thead>
+            <tbody>
+              <tr><td>#124</td><td>Login button not responsive</td><td><span class="badge open">Open</span></td><td>High</td></tr>
+              <tr><td>#130</td><td>Crash on submitting form</td><td><span class="badge blocked">Blocked</span></td><td>Critical</td></tr>
+              <tr><td>#135</td><td>UI misalignment on mobile</td><td><span class="badge in-progress">In Progress</span></td><td>Medium</td></tr>
+              <tr><td>#140</td><td>Data sync failure</td><td><span class="badge open">Open</span></td><td>High</td></tr>
+            </tbody>
+          </table>
+          <button style="margin-top:10px;">View all bugs</button>
+        </section>
+
+        <section class="card" aria-label="Sprint Retrospective Highlights">
+          <h3>Sprint Retrospective Highlights</h3>
+          <ul>
+            <li>Improve test coverage on the mobile app.</li>
+            <li>Address frequent crashes on submission.</li>
+            <li>Better documentation for REST APIs.</li>
+            <li>Schedule daily standups for dev and QA teams.</li>
+          </ul>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
+</content>
+</create_file>
+
+<thinking>
+The dashboard page is ready with consistent UI and navigation links to the other pages.
+
+Next, I will proceed with creating the projects.html which will contain the projects tab content with navigation as well.
+</thinking>
+```

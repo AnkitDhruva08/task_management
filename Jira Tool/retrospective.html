@@ -1,0 +1,178 @@
+I will now create the next page `retrospective.html`, containing the Retrospective page content with consistent header and sidebar navigation.
+
+Here is the complete `retrospective.html` file for you:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Project Management - Retrospective</title>
+<style>
+  /* Reset and base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    color: #2c3e50;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+  h1,h2,h3,h4,h5,h6 {
+    margin: 0;
+    font-weight: 600;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  /* Header */
+  header.app-header {
+    background: #0747a6;
+    color: white;
+    padding: 12px 24px;
+    font-size: 22px;
+    font-weight: 700;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  /* Container */
+  .app-container {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+    height: calc(100vh - 52px);
+  }
+
+  /* Sidebar */
+  nav.sidebar {
+    width: 240px;
+    background-color: #172b4d;
+    color: #aab8c2;
+    display: flex;
+    flex-direction: column;
+    padding-top: 12px;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+  nav.sidebar a {
+    padding: 14px 20px;
+    font-size: 14px;
+    color: #aab8c2;
+    user-select: none;
+    border-left: 4px solid transparent;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  nav.sidebar a.active, nav.sidebar a:hover {
+    background-color: #0052cc;
+    color: white;
+    border-left-color: #4c9aff;
+    font-weight: 600;
+  }
+
+  /* Main content */
+  main.main-content {
+    flex-grow: 1;
+    padding: 20px 28px;
+    background: white;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Title */
+  h2 {
+    margin-bottom: 18px;
+    color: #0747a6;
+  }
+
+  ul {
+    padding-left: 20px;
+    font-size: 15px;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    nav.sidebar {
+      width: 100%;
+      height: auto;
+      flex-direction: row;
+      padding: 0;
+      overflow-x: auto;
+    }
+    nav.sidebar a {
+      flex: 1;
+      padding: 10px;
+      font-size: 12px;
+      border-left: none;
+      border-bottom: 3px solid transparent;
+      text-align: center;
+    }
+    nav.sidebar a.active, nav.sidebar a:hover {
+      border-bottom: 3px solid #4c9aff;
+      background: none;
+      color: #4c9aff;
+      border-left: none;
+    }
+    .app-container {
+      flex-direction: column;
+      height: auto;
+    }
+    main.main-content {
+      padding: 15px;
+      height: calc(100vh - 52px - 48px);
+      overflow-y: auto;
+    }
+  }
+</style>
+</head>
+<body>
+<header class="app-header">Project Management - Retrospective</header>
+<div class="app-container">
+  <nav class="sidebar" aria-label="Primary navigation">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="projects.html">Projects</a>
+    <a href="bugs_testing.html">Bugs & Testing</a>
+    <a href="retrospective.html" class="active">Retrospective</a>
+    <a href="employees.html">Employees</a>
+    <a href="tasks_today.html">Tasks Today</a>
+  </nav>
+  <main class="main-content" role="main">
+    <h2>Sprint Retrospective Highlights</h2>
+    <ul>
+      <li>Improve test coverage on the mobile app.</li>
+      <li>Address frequent crashes on submission.</li>
+      <li>Better documentation for REST APIs.</li>
+      <li>Schedule daily standups for dev and QA teams.</li>
+      <li>Focus on UI responsiveness on mobile devices.</li>
+      <li>Prioritize bug fixes blocking releases.</li>
+    </ul>
+    <h2>Action Items</h2>
+    <ul>
+      <li>Implement automated UI tests for mobile app.</li>
+      <li>Fix critical backend crash bug ASAP.</li>
+      <li>Enhance API documentation and developer onboarding.</li>
+      <li>Plan team training for new project management tools.</li>
+    </ul>
+  </main>
+</div>
+</body>
+</html>
+```
+
+This completes the Retrospective page with consistent UI and navigation.
+
+Please confirm if you want me to proceed with the next page `employees.html`.

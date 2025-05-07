@@ -1,0 +1,234 @@
+<!-- I will now create the final page `tasks_today.html`, containing the Tasks Today page content with consistent header and sidebar navigation.
+
+Here is the complete `tasks_today.html` file for you:
+
+```html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Project Management - Tasks Today</title>
+<style>
+  /* Reset and base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    color: #2c3e50;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+  h1,h2,h3,h4 {
+    margin: 0;
+    font-weight: 600;
+  }
+  button {
+    cursor: pointer;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 14px;
+    background-color: #0052cc;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #0747a6;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Header */
+  header.app-header {
+    background: #0747a6;
+    color: white;
+    padding: 12px 24px;
+    font-size: 22px;
+    font-weight: 700;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  /* Container */
+  .app-container {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+    height: calc(100vh - 52px);
+  }
+
+  /* Sidebar */
+  nav.sidebar {
+    width: 240px;
+    background-color: #172b4d;
+    color: #aab8c2;
+    display: flex;
+    flex-direction: column;
+    padding-top: 12px;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+  nav.sidebar a {
+    padding: 14px 20px;
+    font-size: 14px;
+    color: #aab8c2;
+    user-select: none;
+    border-left: 4px solid transparent;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  nav.sidebar a.active, nav.sidebar a:hover {
+    background-color: #0052cc;
+    color: white;
+    border-left-color: #4c9aff;
+    font-weight: 600;
+  }
+
+  /* Main content */
+  main.main-content {
+    flex-grow: 1;
+    padding: 20px 28px;
+    background: white;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Title */
+  h2 {
+    margin-bottom: 18px;
+    color: #0747a6;
+  }
+
+  /* Tasks table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid #e1e4e8;
+    vertical-align: middle;
+  }
+  th {
+    background-color: #f6f8fa;
+    font-weight: 600;
+    color: #172b4d;
+  }
+  .badge {
+    display: inline-block;
+    padding: 4px 11px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .badge.open { background-color: #de350b; }
+  .badge.in-progress { background-color: #ff991f; }
+  .badge.done { background-color: #36b37e; }
+  .badge.blocked { background-color: #ff5630; }
+  .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #4c9aff;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 7px;
+    user-select: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    nav.sidebar {
+      width: 100%;
+      height: auto;
+      flex-direction: row;
+      padding: 0;
+      overflow-x: auto;
+    }
+    nav.sidebar a {
+      flex: 1;
+      padding: 10px;
+      font-size: 12px;
+      border-left: none;
+      border-bottom: 3px solid transparent;
+      text-align: center;
+    }
+    nav.sidebar a.active, nav.sidebar a:hover {
+      border-bottom: 3px solid #4c9aff;
+      background: none;
+      color: #4c9aff;
+      border-left: none;
+    }
+    .app-container {
+      flex-direction: column;
+      height: auto;
+    }
+    main.main-content {
+      padding: 15px;
+      height: calc(100vh - 52px - 48px);
+      overflow-y: auto;
+    }
+  }
+</style>
+</head>
+<body>
+<header class="app-header">Project Management - Tasks Today</header>
+<div class="app-container">
+  <nav class="sidebar" aria-label="Primary navigation">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="projects.html">Projects</a>
+    <a href="bugs_testing.html">Bugs & Testing</a>
+    <a href="retrospective.html">Retrospective</a>
+    <a href="employees.html">Employees</a>
+    <a href="tasks_today.html" class="active">Tasks Today</a>
+  </nav>
+  <main class="main-content" role="main">
+    <h2>Tasks Today</h2>
+    <table aria-label="Tasks planned for today">
+      <thead>
+        <tr><th>Employee</th><th>Project</th><th>Task</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="avatar" title="John Smith">JS</span> John Smith</td><td>Mobile App</td><td>Fix login bug</td><td><span class="badge in-progress">In Progress</span></td></tr>
+        <tr><td><span class="avatar" title="Alice Brown">AB</span> Alice Brown</td><td>Website Redesign</td><td>Create wireframes</td><td><span class="badge done">Done</span></td></tr>
+        <tr><td><span class="avatar" title="Mark Wilson">MW</span> Mark Wilson</td><td>API Development</td><td>Code review &amp; deploy</td><td><span class="badge done">Done</span></td></tr>
+        <tr><td><span class="avatar" title="Lisa Stern">LS</span> Lisa Stern</td><td>Mobile App</td><td>Write test cases</td><td><span class="badge open">Open</span></td></tr>
+        <tr><td><span class="avatar" title="David Tan">DT</span> David Tan</td><td>Website Redesign</td><td>Implement responsive header</td><td><span class="badge in-progress">In Progress</span></td></tr>
+      </tbody>
+    </table>
+  </main>
+</div>
+</body>
+</html>
+```
+<!-- 
+This finishes the final Tasks Today page with consistent UI and navigation across all pages.
+
+You now have one clean, modern, mobile responsive HTML page per main section of the Jira-style project management tool, linked through sidebar navigation.
+
+Open each file (dashboard.html, projects.html, bugs_testing.html, retrospective.html, employees.html, tasks_today.html) in a modern browser to see each page.
+
+If you want me to help you combine these into a single multipage app with routing, or add dynamic features, just say! -->

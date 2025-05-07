@@ -1,0 +1,500 @@
+<!-- You want a Figma-style design similar to Jira — a sophisticated project management tool with features like project status tracking, bug reports, retrospectives, testing bugs, day-to-day activities, employee-task assignment, and task tracking — as a single cohesive Figma-like interface.
+
+While I cannot create actual Figma files here, I will provide you with a high-fidelity, modern, mobile-responsive, interactive project management dashboard implemented in a **single self-contained HTML file** with inline CSS and JavaScript that visually and functionally resembles Jira's major features.
+
+This HTML file will include:
+
+- Sidebar navigation with tabs: Dashboard, Projects, Bugs & Testing, Retrospective, Employees, Tasks Today  
+- Rich, visually distinct tab content areas replicating Jira-style UX/UI  
+- Interactive tab switching with ARIA and keyboard accessibility  
+- Project cards with progress bars and status badges  
+- Bug reports and testing tables with status and priorities  
+- Retrospective notes and action items  
+- Employee list with task assignments and day-to-day activity tracking  
+- Tasks with statuses and clear badges  
+- Modern fonts, colors, spacing, and subtle shadows for clean look  
+- Responsive design optimized for desktop and mobile screens (max 600px height / 350px width)  
+
+You can open this single HTML file in any modern browser to have a rich Jira-like project management dashboard experience, perfect as a Figma visual reference or a working prototype.
+
+I will now proceed to create this full-featured project management dashboard as one standalone HTML file for you to download and review.
+
+
+`jira_style_project_management_dashboard.html`
+```html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jira Style Project Management Dashboard</title>
+<style>
+  /* Reset and base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    color: #2c3e50;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+  h1,h2,h3,h4,h5,h6 {
+    margin: 0;
+    font-weight: 600;
+  }
+  button {
+    cursor: pointer;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 14px;
+    background-color: #0052cc;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #0747a6;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Header */
+  header.app-header {
+    background: #0747a6;
+    color: white;
+    padding: 12px 24px;
+    font-size: 22px;
+    font-weight: 700;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  /* Container */
+  .app-container {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+    height: calc(100vh - 52px);
+  }
+
+  /* Sidebar */
+  nav.sidebar {
+    width: 240px;
+    background-color: #172b4d;
+    color: #aab8c2;
+    display: flex;
+    flex-direction: column;
+    padding-top: 12px;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+  nav.sidebar a {
+    padding: 14px 20px;
+    font-size: 14px;
+    color: #aab8c2;
+    user-select: none;
+    border-left: 4px solid transparent;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  nav.sidebar a.active, nav.sidebar a:hover {
+    background-color: #0052cc;
+    color: white;
+    border-left-color: #4c9aff;
+    font-weight: 600;
+  }
+
+  /* Main content */
+  main.main-content {
+    flex-grow: 1;
+    padding: 20px 28px;
+    background: white;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Tab sections */
+  section.tab-panel {
+    display: none;
+  }
+  section.tab-panel.active {
+    display: block;
+  }
+
+  /* Dashboard overview grid */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: white;
+    padding: 18px 20px;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 0.1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card h3 {
+    color: #0747a6;
+    margin-bottom: 12px;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    background: #dfe1e6;
+    border-radius: 10px;
+    height: 11px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .progress-bar-fill {
+    height: 11px;
+    background: #4c9aff;
+    border-radius: 10px 0 0 10px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* Table styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid #e1e4e8;
+    vertical-align: middle;
+  }
+  th {
+    background-color: #f6f8fa;
+    font-weight: 600;
+    color: #172b4d;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 4px 11px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .badge.open { background-color: #de350b; }
+  .badge.in-progress { background-color: #ff991f; }
+  .badge.done { background-color: #36b37e; }
+  .badge.blocked { background-color: #ff5630; }
+  .badge.low { background-color: #36b37e; }
+  .badge.medium { background-color: #ff991f; }
+  .badge.high { background-color: #de350b; }
+  .badge.critical { background-color: #b82525; }
+
+  /* Avatars for employees */
+  .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #4c9aff;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 7px;
+    user-select: none;
+  }
+
+  /* Lists */
+  ul {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+
+  /* Buttons */
+  button.cta {
+    background-color: #0052cc;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 12px;
+    align-self: flex-start;
+  }
+  button.cta:hover {
+    background-color: #073c9a;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav.sidebar {
+      width: 60px;
+      padding-top: 0;
+    }
+    nav.sidebar a {
+      font-size: 0;
+      padding: 12px 0;
+      border-left: none;
+      border-top: 3px solid transparent;
+      text-align: center;
+    }
+    nav.sidebar a.active, nav.sidebar a:hover {
+      border-left: none;
+      border-top: 3px solid #4c9aff;
+      background-color: inherit;
+      color: #4c9aff;
+    }
+    .avatar {
+      width: 22px;
+      height: 22px;
+      font-size: 11px;
+      margin-right: 0;
+    }
+    main.main-content {
+      padding: 14px 16px;
+    }
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+<header class="app-header" role="banner">Jira Style Project Management</header>
+<div class="app-container" role="main">
+  <nav class="sidebar" aria-label="Primary navigation">
+    <a href="#" class="active" data-tab="dashboard" role="tab" aria-selected="true" tabindex="0" title="Dashboard">Dashboard</a>
+    <a href="#" data-tab="projects" role="tab" aria-selected="false" tabindex="-1" title="Projects">Projects</a>
+    <a href="#" data-tab="bugs" role="tab" aria-selected="false" tabindex="-1" title="Bugs &amp; Testing">Bugs & Testing</a>
+    <a href="#" data-tab="retrospective" role="tab" aria-selected="false" tabindex="-1" title="Retrospective">Retrospective</a>
+    <a href="#" data-tab="employees" role="tab" aria-selected="false" tabindex="-1" title="Employees">Employees</a>
+    <a href="#" data-tab="tasks" role="tab" aria-selected="false" tabindex="-1" title="Tasks Today">Tasks Today</a>
+  </nav>
+  <main class="main-content">
+    <!-- Dashboard Tab -->
+    <section id="dashboard" class="tab-panel active" role="tabpanel" tabindex="0" aria-label="Dashboard overview">
+      <h2>Dashboard Overview</h2>
+      <div class="dashboard-grid">
+        <div class="card" aria-label="Project Status">
+          <h3>Project Status</h3>
+          <table>
+            <thead><tr><th>Project</th><th>Progress</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Website Redesign</td>
+                <td>
+                  <div class="progress-bar" aria-label="60 percent complete">
+                    <div class="progress-bar-fill" style="width:60%;"></div>
+                  </div>
+                </td>
+                <td><span class="badge in-progress">In Progress</span></td>
+              </tr>
+              <tr>
+                <td>Mobile App</td>
+                <td>
+                  <div class="progress-bar" aria-label="80 percent complete">
+                    <div class="progress-bar-fill" style="width:80%;"></div>
+                  </div>
+                </td>
+                <td><span class="badge in-progress">In Progress</span></td>
+              </tr>
+              <tr>
+                <td>API Development</td>
+                <td>
+                  <div class="progress-bar" aria-label="100 percent complete">
+                    <div class="progress-bar-fill" style="width:100%;background:#36b37e;"></div>
+                  </div>
+                </td>
+                <td><span class="badge done">Done</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card" aria-label="Bug Tracking">
+          <h3>Bug Tracking</h3>
+          <table>
+            <thead><tr><th>ID</th><th>Title</th><th>Status</th><th>Priority</th></tr></thead>
+            <tbody>
+              <tr><td>#124</td><td>Login button not responsive</td><td><span class="badge open">Open</span></td><td>High</td></tr>
+              <tr><td>#130</td><td>Crash on submitting form</td><td><span class="badge blocked">Blocked</span></td><td>Critical</td></tr>
+              <tr><td>#135</td><td>UI misalignment on mobile</td><td><span class="badge in-progress">In Progress</span></td><td>Medium</td></tr>
+              <tr><td>#140</td><td>Data sync failure</td><td><span class="badge open">Open</span></td><td>High</td></tr>
+            </tbody>
+          </table>
+          <button class="cta" aria-label="View all bugs">View all bugs</button>
+        </div>
+        <div class="card" aria-label="Sprint Retrospective Highlights">
+          <h3>Sprint Retrospective Highlights</h3>
+          <ul>
+            <li>Improve test coverage on the mobile app.</li>
+            <li>Address frequent crashes on submission.</li>
+            <li>Better documentation for REST APIs.</li>
+            <li>Schedule daily standups for dev and QA teams.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Tab -->
+    <section id="projects" class="tab-panel" role="tabpanel" tabindex="-1" aria-label="Projects list and status">
+      <h2>Projects</h2>
+      <table aria-label="Projects table">
+        <thead><tr><th>Project Name</th><th>Status</th><th>Progress</th><th>Start Date</th><th>End Date</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Website Redesign</td>
+            <td><span class="badge in-progress">In Progress</span></td>
+            <td><div class="progress-bar" aria-label="60 percent complete"><div class="progress-bar-fill" style="width:60%;"></div></div></td>
+            <td>2024-01-10</td>
+            <td>2024-05-30</td>
+          </tr>
+          <tr>
+            <td>Mobile App</td>
+            <td><span class="badge in-progress">In Progress</span></td>
+            <td><div class="progress-bar" aria-label="80 percent complete"><div class="progress-bar-fill" style="width:80%;"></div></div></td>
+            <td>2023-12-01</td>
+            <td>2024-04-15</td>
+          </tr>
+          <tr>
+            <td>API Development</td>
+            <td><span class="badge done">Done</span></td>
+            <td><div class="progress-bar" aria-label="100 percent complete"><div class="progress-bar-fill" style="width:100%;background:#36b37e;"></div></div></td>
+            <td>2023-09-01</td>
+            <td>2023-12-31</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Bugs & Testing Tab -->
+    <section id="bugs" class="tab-panel" role="tabpanel" tabindex="-1" aria-label="Bug reports and testing">
+      <h2>Bugs & Testing</h2>
+      <table aria-label="Bug reports table">
+        <thead><tr><th>ID</th><th>Title</th><th>Status</th><th>Priority</th><th>Assigned To</th><th>Created</th></tr></thead>
+        <tbody>
+          <tr><td>#124</td><td>Login button not responsive</td><td><span class="badge open">Open</span></td><td><span class="badge high">High</span></td><td>John Smith</td><td>2024-04-15</td></tr>
+          <tr><td>#130</td><td>Crash on submitting form</td><td><span class="badge blocked">Blocked</span></td><td><span class="badge critical">Critical</span></td><td>Lisa Stern</td><td>2024-04-12</td></tr>
+          <tr><td>#135</td><td>UI misalignment on mobile</td><td><span class="badge in-progress">In Progress</span></td><td><span class="badge medium">Medium</span></td><td>Alice Brown</td><td>2024-04-10</td></tr>
+          <tr><td>#140</td><td>Data sync failure</td><td><span class="badge open">Open</span></td><td><span class="badge high">High</span></td><td>Mark Wilson</td><td>2024-04-17</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Retrospective Tab -->
+    <section id="retrospective" class="tab-panel" role="tabpanel" tabindex="-1" aria-label="Sprint retrospective notes">
+      <h2>Retrospective</h2>
+      <ul>
+        <li>Improve test coverage on the mobile app.</li>
+        <li>Address frequent crashes on submission.</li>
+        <li>Better documentation for REST APIs.</li>
+        <li>Schedule daily standups for dev and QA teams.</li>
+      </ul>
+    </section>
+
+    <!-- Employees Tab -->
+    <section id="employees" class="tab-panel" role="tabpanel" tabindex="-1" aria-label="Employees list">
+      <h2>Employees</h2>
+      <table aria-label="Employees table">
+        <thead><tr><th>Employee</th><th>Role</th><th>Projects</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><span class="avatar" title="John Smith">JS</span> John Smith</td><td>QA Engineer</td><td>Mobile App, Website Redesign</td><td>Active</td></tr>
+          <tr><td><span class="avatar" title="Alice Brown">AB</span> Alice Brown</td><td>UI/UX Designer</td><td>Website Redesign</td><td>Active</td></tr>
+          <tr><td><span class="avatar" title="Mark Wilson">MW</span> Mark Wilson</td><td>Backend Developer</td><td>API Development</td><td>Active</td></tr>
+          <tr><td><span class="avatar" title="Lisa Stern">LS</span> Lisa Stern</td><td>QA Engineer</td><td>Mobile App</td><td>Active</td></tr>
+          <tr><td><span class="avatar" title="David Tan">DT</span> David Tan</td><td>Frontend Developer</td><td>Website Redesign</td><td>Active</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Tasks Today Tab -->
+    <section id="tasks" class="tab-panel" role="tabpanel" tabindex="-1" aria-label="Today's tasks">
+      <h2>Tasks Today</h2>
+      <table aria-label="Tasks today table">
+        <thead><tr><th>Employee</th><th>Project</th><th>Task</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><span class="avatar" title="John Smith">JS</span> John Smith</td><td>Mobile App</td><td>Fix login bug</td><td><span class="badge in-progress">In Progress</span></td></tr>
+          <tr><td><span class="avatar" title="Alice Brown">AB</span> Alice Brown</td><td>Website Redesign</td><td>Create wireframes</td><td><span class="badge done">Done</span></td></tr>
+          <tr><td><span class="avatar" title="Mark Wilson">MW</span> Mark Wilson</td><td>API Development</td><td>Code review &amp; deploy</td><td><span class="badge done">Done</span></td></tr>
+          <tr><td><span class="avatar" title="Lisa Stern">LS</span> Lisa Stern</td><td>Mobile App</td><td>Write test cases</td><td><span class="badge open">Open</span></td></tr>
+          <tr><td><span class="avatar" title="David Tan">DT</span> David Tan</td><td>Website Redesign</td><td>Implement responsive header</td><td><span class="badge in-progress">In Progress</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+</div>
+<script>
+  const sidebarLinks = document.querySelectorAll('nav.sidebar a');
+  const tabPanels = document.querySelectorAll('section.tab-panel');
+
+  function activateTab(tabId) {
+    sidebarLinks.forEach(link => {
+      const isActive = link.dataset.tab === tabId;
+      link.classList.toggle('active', isActive);
+      link.setAttribute('aria-selected', isActive);
+      link.tabIndex = isActive ? 0 : -1;
+    });
+    tabPanels.forEach(panel => {
+      const isActive = panel.id === tabId;
+      panel.classList.toggle('active', isActive);
+      panel.tabIndex = isActive ? 0 : -1;
+    });
+  }
+
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      activateTab(link.dataset.tab);
+    });
+
+    link.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activateTab(link.dataset.tab);
+        link.focus();
+      }
+    });
+  });
+
+  // Initialize focus and ARIA states
+  activateTab('dashboard');
+</script>
+</body>
+</html>
+</content>
+</create_file>
+
+<attempt_completion>
+✅ Jira-style Project Management Dashboard in a single HTML file created!
+
+- Clean, modern interface with sidebar navigation and tabs: Dashboard, Projects, Bugs & Testing, Retrospective, Employees, Tasks Today  
+- Each tab includes detailed tables, progress bars, badges, avatars, and lists with accessible ARIA roles  
+- Responsive and optimized for mobile screens max width 350px and height 600px  
+- Keyboard accessible with ARIA tab roles and states  
+- Easy to open and preview in any modern browser as a rich prototype or Figma reference
+
+Open the file `jira_style_project_management_dashboard.html` in your browser to experience a fully featured Jira-like project management tool UI.
+
+If you want me to generate separate files, add advanced interactivity, or backend integration next, please let me know!
+</attempt_completion>
+```
